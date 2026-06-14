@@ -7,47 +7,39 @@
   <meta name="description" content="Каталог MVP-идей: подарки для пар, Авито-услуги, лендинги, электрика и документы." />
   <link rel="stylesheet" href="assets/style.css" />
   <style>
-    .card-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-    }
-    .card-actions .btn { width: 100%; }
-    @media (max-width: 560px) {
-      .card-actions { grid-template-columns: 1fr; }
-    }
+    .card-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+    .card-actions .btn { width: 100%; padding-left: 10px; padding-right: 10px; }
+    @media (max-width: 560px) { .card-actions { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main class="page">
     <section class="hero">
       <nav class="nav">
-        <a class="logo" href="index.html" aria-label="testIdea home">
-          <span class="logo-mark">⚡</span>
-          <span>testIdea</span>
-        </a>
+        <a class="logo" href="index.html" aria-label="testIdea home"><span class="logo-mark">⚡</span><span>testIdea</span></a>
         <div class="nav-links">
           <a href="#catalog">Каталог</a>
-          <a href="mvp.html?id=love-site">Первый MVP</a>
-          <a href="visual.html?id=love-site">Визуальный просмотр</a>
+          <a href="mvp.html?id=love-site">Описание</a>
+          <a href="visual.html?id=love-site">Визуал</a>
+          <a href="demo.html?id=love-site">Демо</a>
         </div>
       </nav>
 
       <span class="kicker">BLCK MVP LAB</span>
       <h1>Витрина идей, которые можно продать.</h1>
-      <p class="lead">Стартовое меню для всех ниш и MVP: карточки со скринами-превью, статусами, ценами и двумя режимами просмотра — описание и визуальная демо-сцена. Новые идеи добавляются через один файл данных.</p>
+      <p class="lead">Стартовое меню для всех ниш и MVP: карточки со скринами-превью, статусами, ценами и тремя режимами — описание, визуал и пример реализации.</p>
 
       <div class="hero-actions">
         <a class="btn primary" href="#catalog">Смотреть MVP</a>
         <a class="btn" href="mvp.html?id=love-site">Открыть описание</a>
-        <a class="btn gold" href="visual.html?id=love-site">Открыть визуально</a>
+        <a class="btn" href="visual.html?id=love-site">Открыть визуал</a>
+        <a class="btn gold" href="demo.html?id=love-site">Открыть демо</a>
       </div>
 
       <div class="stats" id="stats">
         <div class="stat"><strong id="stat-count">0</strong><span>идей в витрине</span></div>
         <div class="stat"><strong id="stat-mvp">0</strong><span>готовы как MVP</span></div>
-        <div class="stat"><strong>2 режима</strong><span>описание + визуальный просмотр</span></div>
+        <div class="stat"><strong>3 режима</strong><span>описание + визуал + демо</span></div>
       </div>
     </section>
 
@@ -56,14 +48,11 @@
         <input class="search" id="search" type="search" placeholder="Найти идею: сайт, Авито, электрика..." />
         <div class="filters" id="filters"></div>
       </div>
-
       <div class="grid" id="grid"></div>
       <div class="empty" id="empty">Ничего не найдено. Попробуй другой запрос или категорию.</div>
     </section>
 
-    <footer class="footer-note">
-      Система сделана с запасом: добавляем новую запись в <code>data/ideas.js</code> — и она появляется в меню, фильтрах, странице описания и на визуальной демо-странице.
-    </footer>
+    <footer class="footer-note">Добавляешь новую запись в <code>data/ideas.js</code> — она появляется в каталоге, описании, визуале и демо-режиме.</footer>
   </main>
 
   <script src="data/ideas.js"></script>
@@ -74,70 +63,26 @@
     const empty = document.querySelector('#empty');
     const ideas = window.IDEAS || [];
     let activeCategory = 'Все';
-
     const categories = ['Все', ...new Set(ideas.map(item => item.category))];
-
     document.querySelector('#stat-count').textContent = ideas.length;
     document.querySelector('#stat-mvp').textContent = ideas.filter(item => item.status === 'MVP').length;
 
     function previewIcon(type) {
-      const icons = {
-        romantic: '💗', book: '📖', box: '🎁', letters: '✉️', passport: '📜', order: '🛡️',
-        market: '🛒', landing: '🌐', electric: '⚡', docs: '📝'
-      };
+      const icons = { romantic:'💗', book:'📖', box:'🎁', letters:'✉️', passport:'📜', order:'🛡️', market:'🛒', landing:'🌐', electric:'⚡', docs:'📝' };
       return icons[type] || '✨';
     }
 
     function makePreview(item) {
-      return `
-        <div class="preview">
-          <div class="browser">
-            <div class="browser-top"><i></i><i></i><i></i></div>
-            <div class="mock">
-              <div class="mock-heart">${previewIcon(item.visual)}</div>
-              <div class="mock-title"></div>
-              <div class="mock-line"></div>
-              <div class="mock-line short"></div>
-              <div class="mock-row"><div class="mock-box"></div><div class="mock-box"></div><div class="mock-box"></div></div>
-            </div>
-          </div>
-        </div>`;
+      return `<div class="preview"><div class="browser"><div class="browser-top"><i></i><i></i><i></i></div><div class="mock"><div class="mock-heart">${previewIcon(item.visual)}</div><div class="mock-title"></div><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-row"><div class="mock-box"></div><div class="mock-box"></div><div class="mock-box"></div></div></div></div></div>`;
     }
 
     function card(item) {
-      return `
-        <article class="card">
-          ${makePreview(item)}
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="badge">${item.status}</span>
-              <span class="category">${item.category}</span>
-            </div>
-            <h2>${item.title}</h2>
-            <p>${item.tagline}</p>
-            <div class="card-footer" style="display:block;">
-              <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:14px;">
-                <span class="price">${item.price}</span>
-                <span class="category">${item.time}</span>
-              </div>
-              <div class="card-actions">
-                <a class="btn" href="mvp.html?id=${item.id}">Описание</a>
-                <a class="btn primary" href="visual.html?id=${item.id}">Визуально</a>
-              </div>
-            </div>
-          </div>
-        </article>`;
+      return `<article class="card">${makePreview(item)}<div class="card-body"><div class="card-meta"><span class="badge">${item.status}</span><span class="category">${item.category}</span></div><h2>${item.title}</h2><p>${item.tagline}</p><div class="card-footer" style="display:block;"><div style="display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:14px;"><span class="price">${item.price}</span><span class="category">${item.time}</span></div><div class="card-actions"><a class="btn" href="mvp.html?id=${item.id}">Описание</a><a class="btn" href="visual.html?id=${item.id}">Визуал</a><a class="btn primary" href="demo.html?id=${item.id}">Демо</a></div></div></div></article>`;
     }
 
     function renderFilters() {
       filters.innerHTML = categories.map(cat => `<button class="filter ${cat === activeCategory ? 'active' : ''}" data-category="${cat}">${cat}</button>`).join('');
-      filters.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          activeCategory = btn.dataset.category;
-          renderFilters();
-          renderGrid();
-        });
-      });
+      filters.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => { activeCategory = btn.dataset.category; renderFilters(); renderGrid(); }));
     }
 
     function renderGrid() {
@@ -150,7 +95,6 @@
       grid.innerHTML = filtered.map(card).join('');
       empty.style.display = filtered.length ? 'none' : 'block';
     }
-
     search.addEventListener('input', renderGrid);
     renderFilters();
     renderGrid();
