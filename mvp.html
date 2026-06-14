@@ -15,7 +15,7 @@
         <div class="nav-links">
           <a href="index.html#catalog">← Все MVP</a>
           <a id="visual-link-top" href="visual.html">Визуал</a>
-          <a id="demo-link-top" href="demo.html">Демо</a>
+          <a id="page-link-top" href="pages/love-site.html">Страница MVP</a>
           <a href="data/ideas.js">Данные</a>
         </div>
       </nav>
@@ -30,8 +30,9 @@
     const ideas = window.IDEAS || [];
     const item = ideas.find(idea => idea.id === id) || ideas[0];
     const root = document.querySelector('#mvp-root');
+    const pageLink = `pages/${item.id}.html`;
     document.querySelector('#visual-link-top').href = `visual.html?id=${item.id}`;
-    document.querySelector('#demo-link-top').href = `demo.html?id=${item.id}`;
+    document.querySelector('#page-link-top').href = pageLink;
 
     function list(items, ordered = false) { const tag = ordered ? 'ol' : 'ul'; return `<${tag}>${(items || []).map(text => `<li>${text}</li>`).join('')}</${tag}>`; }
     function previewIcon(type) { const icons = { romantic:'💗', book:'📖', box:'🎁', letters:'✉️', passport:'📜', order:'🛡️', market:'🛒', landing:'🌐', electric:'⚡', docs:'📝' }; return icons[type] || '✨'; }
@@ -49,7 +50,7 @@
             <div class="hero-actions">
               <span class="chip">Цена: ${item.price}</span>
               <span class="chip">Срок: ${item.time}</span>
-              <a class="btn primary" href="demo.html?id=${item.id}">Смотреть пример реализации</a>
+              <a class="btn primary" href="${pageLink}">Открыть отдельную страницу MVP</a>
               <a class="btn" href="visual.html?id=${item.id}">Визуал</a>
             </div>
           </div>
@@ -62,7 +63,7 @@
           <article class="panel section"><h3>Что нужно от клиента</h3>${list(item.clientData)}</article>
           <article class="panel section"><h3>Апсейлы</h3>${list(item.upsell)}</article>
           <article class="panel section"><h3>Как тестировать</h3>${list(['Сделать один демо-пример на условных данных.','Выложить 1 объявление на Авито и 1 пост во ВК/локальный чат.','Написать 10 потенциальным клиентам с коротким оффером.','Первые 3 заказа сделать дешевле ради портфолио и отзывов.'], true)}</article>
-          <article class="panel offer" id="offer"><div><h3>Готовый оффер</h3><p class="detail-text">${item.cta}: сделаю под вашу ситуацию, с понятной структурой, быстрым запуском и версией, которую можно сразу показать клиенту.</p></div><div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;"><a class="btn primary" href="demo.html?id=${item.id}">Пример реализации</a><a class="btn" href="visual.html?id=${item.id}">Визуал</a><a class="btn gold" href="index.html#catalog">Другие идеи</a></div></article>
+          <article class="panel offer" id="offer"><div><h3>Готовый оффер</h3><p class="detail-text">${item.cta}: сделаю под вашу ситуацию, с понятной структурой, быстрым запуском и отдельной страницей реализации.</p></div><div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;"><a class="btn primary" href="${pageLink}">Страница MVP</a><a class="btn" href="visual.html?id=${item.id}">Визуал</a><a class="btn gold" href="index.html#catalog">Другие идеи</a></div></article>
         </section>`;
     }
     render(item);
