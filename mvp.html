@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MVP — testIdea</title>
+  <meta name="description" content="Страница MVP-идеи из каталога testIdea." />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <nav class="nav">
+        <a class="logo" href="index.html">
+          <span class="logo-mark">⚡</span>
+          <span>testIdea</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html#catalog">← Все MVP</a>
+          <a href="data/ideas.js">Данные</a>
+          <a href="ideas/gifts-for-couples.md">Идеи MD</a>
+        </div>
+      </nav>
+
+      <div id="mvp-root"></div>
+    </section>
+  </main>
+
+  <script src="data/ideas.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || 'love-site';
+    const ideas = window.IDEAS || [];
+    const item = ideas.find(idea => idea.id === id) || ideas[0];
+    const root = document.querySelector('#mvp-root');
+
+    function list(items, ordered = false) {
+      const tag = ordered ? 'ol' : 'ul';
+      return `<${tag}>${(items || []).map(text => `<li>${text}</li>`).join('')}</${tag}>`;
+    }
+
+    function previewIcon(type) {
+      const icons = {
+        romantic: '💗', book: '📖', box: '🎁', letters: '✉️', passport: '📜', order: '🛡️',
+        market: '🛒', landing: '🌐', electric: '⚡', docs: '📝'
+      };
+      return icons[type] || '✨';
+    }
+
+    function makePreview(item) {
+      return `
+        <div class="preview" style="height: 100%; min-height: 420px; border-radius: 24px;">
+          <div class="browser">
+            <div class="browser-top"><i></i><i></i><i></i></div>
+            <div class="mock" style="align-content: center; gap: 16px;">
+              <div class="mock-heart" style="font-size: 72px; min-height: 160px;">${previewIcon(item.visual)}</div>
+              <div class="mock-title" style="height: 26px;"></div>
+              <div class="mock-line"></div>
+              <div class="mock-line"></div>
+              <div class="mock-line short"></div>
+              <div class="mock-row"><div class="mock-box"></div><div class="mock-box"></div><div class="mock-box"></div></div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function render(item) {
+      document.title = `${item.title} — MVP testIdea`;
+      root.innerHTML = `
+        <div class="detail-hero">
+          <div class="panel">
+            <span class="kicker">${item.category} · ${item.status}</span>
+            <h1 class="detail-title">${item.title}</h1>
+            <p class="detail-text">${item.tagline}</p>
+            <p class="detail-text"><strong>Крючок:</strong> ${item.hook}</p>
+            <div class="hero-actions">
+              <span class="chip">Цена: ${item.price}</span>
+              <span class="chip">Срок: ${item.time}</span>
+              <a class="btn primary" href="#offer">${item.cta}</a>
+            </div>
+          </div>
+          <div class="panel" aria-label="preview">
+            ${makePreview(item)}
+          </div>
+        </div>
+
+        <section class="sections">
+          <article class="panel section">
+            <h3>Для кого</h3>
+            ${list(item.audience)}
+          </article>
+          <article class="panel section">
+            <h3>Что входит</h3>
+            ${list(item.includes)}
+          </article>
+          <article class="panel section">
+            <h3>MVP-сборка</h3>
+            ${list(item.mvp, true)}
+          </article>
+          <article class="panel section">
+            <h3>Что нужно от клиента</h3>
+            ${list(item.clientData)}
+          </article>
+          <article class="panel section">
+            <h3>Апсейлы</h3>
+            ${list(item.upsell)}
+          </article>
+          <article class="panel section">
+            <h3>Как тестировать</h3>
+            ${list([
+              'Сделать один демо-пример на условных данных.',
+              'Выложить 1 объявление на Авито и 1 пост во ВК/локальный чат.',
+              'Написать 10 потенциальным клиентам с коротким оффером.',
+              'Первые 3 заказа сделать дешевле ради портфолио и отзывов.'
+            ], true)}
+          </article>
+          <article class="panel offer" id="offer">
+            <div>
+              <h3>Готовый оффер</h3>
+              <p class="detail-text">${item.cta}: сделаю под вашу ситуацию, с понятной структурой, быстрым запуском и версией, которую можно сразу показать клиенту.</p>
+            </div>
+            <a class="btn gold" href="index.html#catalog">Смотреть другие идеи</a>
+          </article>
+        </section>
+      `;
+    }
+
+    render(item);
+  </script>
+</body>
+</html>
