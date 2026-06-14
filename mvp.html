@@ -11,17 +11,14 @@
   <main class="page">
     <section class="hero">
       <nav class="nav">
-        <a class="logo" href="index.html">
-          <span class="logo-mark">⚡</span>
-          <span>testIdea</span>
-        </a>
+        <a class="logo" href="index.html"><span class="logo-mark">⚡</span><span>testIdea</span></a>
         <div class="nav-links">
           <a href="index.html#catalog">← Все MVP</a>
-          <a id="visual-link-top" href="visual.html">Визуально</a>
+          <a id="visual-link-top" href="visual.html">Визуал</a>
+          <a id="demo-link-top" href="demo.html">Демо</a>
           <a href="data/ideas.js">Данные</a>
         </div>
       </nav>
-
       <div id="mvp-root"></div>
     </section>
   </main>
@@ -34,36 +31,11 @@
     const item = ideas.find(idea => idea.id === id) || ideas[0];
     const root = document.querySelector('#mvp-root');
     document.querySelector('#visual-link-top').href = `visual.html?id=${item.id}`;
+    document.querySelector('#demo-link-top').href = `demo.html?id=${item.id}`;
 
-    function list(items, ordered = false) {
-      const tag = ordered ? 'ol' : 'ul';
-      return `<${tag}>${(items || []).map(text => `<li>${text}</li>`).join('')}</${tag}>`;
-    }
-
-    function previewIcon(type) {
-      const icons = {
-        romantic: '💗', book: '📖', box: '🎁', letters: '✉️', passport: '📜', order: '🛡️',
-        market: '🛒', landing: '🌐', electric: '⚡', docs: '📝'
-      };
-      return icons[type] || '✨';
-    }
-
-    function makePreview(item) {
-      return `
-        <div class="preview" style="height: 100%; min-height: 420px; border-radius: 24px;">
-          <div class="browser">
-            <div class="browser-top"><i></i><i></i><i></i></div>
-            <div class="mock" style="align-content: center; gap: 16px;">
-              <div class="mock-heart" style="font-size: 72px; min-height: 160px;">${previewIcon(item.visual)}</div>
-              <div class="mock-title" style="height: 26px;"></div>
-              <div class="mock-line"></div>
-              <div class="mock-line"></div>
-              <div class="mock-line short"></div>
-              <div class="mock-row"><div class="mock-box"></div><div class="mock-box"></div><div class="mock-box"></div></div>
-            </div>
-          </div>
-        </div>`;
-    }
+    function list(items, ordered = false) { const tag = ordered ? 'ol' : 'ul'; return `<${tag}>${(items || []).map(text => `<li>${text}</li>`).join('')}</${tag}>`; }
+    function previewIcon(type) { const icons = { romantic:'💗', book:'📖', box:'🎁', letters:'✉️', passport:'📜', order:'🛡️', market:'🛒', landing:'🌐', electric:'⚡', docs:'📝' }; return icons[type] || '✨'; }
+    function makePreview(item) { return `<div class="preview" style="height: 100%; min-height: 420px; border-radius: 24px;"><div class="browser"><div class="browser-top"><i></i><i></i><i></i></div><div class="mock" style="align-content: center; gap: 16px;"><div class="mock-heart" style="font-size: 72px; min-height: 160px;">${previewIcon(item.visual)}</div><div class="mock-title" style="height: 26px;"></div><div class="mock-line"></div><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-row"><div class="mock-box"></div><div class="mock-box"></div><div class="mock-box"></div></div></div></div></div>`; }
 
     function render(item) {
       document.title = `${item.title} — MVP testIdea`;
@@ -77,59 +49,22 @@
             <div class="hero-actions">
               <span class="chip">Цена: ${item.price}</span>
               <span class="chip">Срок: ${item.time}</span>
-              <a class="btn primary" href="#offer">${item.cta}</a>
-              <a class="btn" href="visual.html?id=${item.id}">Посмотреть визуально</a>
+              <a class="btn primary" href="demo.html?id=${item.id}">Смотреть пример реализации</a>
+              <a class="btn" href="visual.html?id=${item.id}">Визуал</a>
             </div>
           </div>
-          <div class="panel" aria-label="preview">
-            ${makePreview(item)}
-          </div>
+          <div class="panel" aria-label="preview">${makePreview(item)}</div>
         </div>
-
         <section class="sections">
-          <article class="panel section">
-            <h3>Для кого</h3>
-            ${list(item.audience)}
-          </article>
-          <article class="panel section">
-            <h3>Что входит</h3>
-            ${list(item.includes)}
-          </article>
-          <article class="panel section">
-            <h3>MVP-сборка</h3>
-            ${list(item.mvp, true)}
-          </article>
-          <article class="panel section">
-            <h3>Что нужно от клиента</h3>
-            ${list(item.clientData)}
-          </article>
-          <article class="panel section">
-            <h3>Апсейлы</h3>
-            ${list(item.upsell)}
-          </article>
-          <article class="panel section">
-            <h3>Как тестировать</h3>
-            ${list([
-              'Сделать один демо-пример на условных данных.',
-              'Выложить 1 объявление на Авито и 1 пост во ВК/локальный чат.',
-              'Написать 10 потенциальным клиентам с коротким оффером.',
-              'Первые 3 заказа сделать дешевле ради портфолио и отзывов.'
-            ], true)}
-          </article>
-          <article class="panel offer" id="offer">
-            <div>
-              <h3>Готовый оффер</h3>
-              <p class="detail-text">${item.cta}: сделаю под вашу ситуацию, с понятной структурой, быстрым запуском и версией, которую можно сразу показать клиенту.</p>
-            </div>
-            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;">
-              <a class="btn" href="visual.html?id=${item.id}">Смотреть визуально</a>
-              <a class="btn gold" href="index.html#catalog">Смотреть другие идеи</a>
-            </div>
-          </article>
-        </section>
-      `;
+          <article class="panel section"><h3>Для кого</h3>${list(item.audience)}</article>
+          <article class="panel section"><h3>Что входит</h3>${list(item.includes)}</article>
+          <article class="panel section"><h3>MVP-сборка</h3>${list(item.mvp, true)}</article>
+          <article class="panel section"><h3>Что нужно от клиента</h3>${list(item.clientData)}</article>
+          <article class="panel section"><h3>Апсейлы</h3>${list(item.upsell)}</article>
+          <article class="panel section"><h3>Как тестировать</h3>${list(['Сделать один демо-пример на условных данных.','Выложить 1 объявление на Авито и 1 пост во ВК/локальный чат.','Написать 10 потенциальным клиентам с коротким оффером.','Первые 3 заказа сделать дешевле ради портфолио и отзывов.'], true)}</article>
+          <article class="panel offer" id="offer"><div><h3>Готовый оффер</h3><p class="detail-text">${item.cta}: сделаю под вашу ситуацию, с понятной структурой, быстрым запуском и версией, которую можно сразу показать клиенту.</p></div><div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end;"><a class="btn primary" href="demo.html?id=${item.id}">Пример реализации</a><a class="btn" href="visual.html?id=${item.id}">Визуал</a><a class="btn gold" href="index.html#catalog">Другие идеи</a></div></article>
+        </section>`;
     }
-
     render(item);
   </script>
 </body>
